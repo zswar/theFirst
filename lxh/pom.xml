@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com</groupId>
+	<artifactId>lxh</artifactId>
+	<version>1.0</version>
+	<packaging>war</packaging>
+
+	<name>lxh</name>
+	<description>lxh</description>
+
+	<properties>
+		<!-- 固定属性设置 -->
+		<!-- 指定JDK版本 -->
+		<java.version>1.8</java.version>
+		<!-- 文件拷贝时的编码 替代maven-resources-plugin的encoding配置 -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- 编译时的编码 替代maven-compiler-plugin的encoding配置 -->
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+
+		<!-- 自定义属性：属性名称全部都是自定义 -->
+		<revision>dev-SNAPSHOT</revision>
+		<spring.version>4.3.18.RELEASE</spring.version>
+		<lombok.version>1.18.0</lombok.version>
+		<jackson.dataformat.xml.version>2.9.6</jackson.dataformat.xml.version>
+		<mybatis.version>3.4.6</mybatis.version>
+		<mybatis.spring.version>1.3.2</mybatis.spring.version>
+		<servlet.api.version>2.5</servlet.api.version>
+		<org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
+		<logback.version>1.2.3</logback.version>
+		<junit.jupiter.version>5.1.0</junit.jupiter.version>
+		<junit.platform.version>1.1.0</junit.platform.version>
+		<jacoco.version>0.8.1</jacoco.version>
+		<tomcat.version>8.5.20</tomcat.version>
+		<sonar.coverage.exclusions>
+			**/beans/**,
+			**/common/**,
+			**/config/**,
+			**/controller/**,
+			**/enums/**,
+			**/exceptions/**,
+			**/service/**,
+			**/samples/**,
+		</sonar.coverage.exclusions>
+	</properties>
+	
+	<dependencies>
+		<!-- springmvc的api及依赖 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<!-- spring上下文依赖 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+			<!-- maven工程管理jar的好处就是,可以将某个jar包依赖的jar包一同加载。
+				但是也会带来一些问题, 如spring-context, 其默认依赖commons-logging。
+				但是本项目中想要使用 slf4j 处理日志, 因此可以使用 下方的 exclusion 节点将依赖
+				的commons-logging的jar包排除。		
+			 -->
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- spring上下文读写支持的依赖 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
+		<!-- 与切面相关 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- spring 对象关系映射 依赖 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- mybatis核心API依赖 -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${mybatis.version}</version>
+		</dependency>
+
+		<!-- mybatis-spring整合核心API依赖 -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>${mybatis.spring.version}</version>
+		</dependency>
+
+		<!-- spring集成junit测试的依赖 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<!-- 声明映射库的时机：是测试  -->
+			<scope>test</scope>
+		</dependency>
+
+		<!-- spring 对 jstl支持的依赖 -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<!-- Servlet API的依赖 -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${servlet.api.version}</version>
+			<!-- 
+				scope默认：compile,意味 在整个容器 编译,运行,测试阶段都需要依赖上述jar。
+				  非默认：provided,代表该容器在运行阶段会提供上述jar的依赖, 而上述jar只需要在编译,测试阶段提供即可。
+						 其实就是Tomcat会在运行阶段提供Servlet-api,而在编译,测试阶段不会, 因此我们又在该阶段依赖
+						了该api,但是在运行阶段又会与Tomcat提供的api发生冲突, 因此特此声明。
+				  3.runtime：在测试和运行时有效 
+				  4.test:只在测试时有效 
+				  5.system:在编译和测试时有效，与本机系统关联，可移植性差
+			 -->
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- dbcp连接池所需要的依赖。
+			dbcp和dbcp2在版本上的变动是对不同jdk的支持不一样,pool2仅支持更高版本。
+			而且两者配置方式发生些许变化。
+		 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+		<!--对于连接池的支持
+			pool和pool2在版本上的变动是对不同jdk的支持不一样,pool2仅支持更高版本。
+			而且两者配置方式发生些许变化。
+		-->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<!-- 
+			MySQL连接Java所需的核心依赖, 与上述两个连接池的依赖互相支持。
+		 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.11</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+			<!-- 不仅仅测试中需要生成日志。 -->
+			<!-- <scope>test</scope> -->
+		</dependency>
+		<!-- logback 与spring整合支持 -->
+		<dependency>
+			<groupId>org.logback-extensions</groupId>
+			<artifactId>logback-ext-spring</artifactId>
+			<version>0.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.0.10.Final</version>
+		</dependency>
+		<!-- Hibernate validation 所需要的包, 下列api中定义了hibernate-validator所需要的接口和规范 -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+		<!-- Hibernate validation 所需要的el依赖。 -->
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>3.0.1-b10</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.10.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>2.10.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-annotations</artifactId>
+		    <version>2.10.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+		<dependency>
+		    <groupId>commons-fileupload</groupId>
+		    <artifactId>commons-fileupload</artifactId>
+		    <version>1.4</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.6</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<!-- 打包插件,打包时定位web.xml所在目录 -->
+			<plugin>
+				<!-- ${basedir是默认根目录的意思} -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.1</version>
+				<!-- 通过下面节点配置打包jar包时,索引web.xml的目录 -->
+				<configuration>
+					<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<!-- 通过cargo插件,内置tomcat,并进行后续的自动部署等.. -->
+			<plugin>
+				<!-- cargo插件的引入。 -->
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.6.7</version>
+				<!-- 配置cargo插件 -->
+				<configuration>
+					<!-- 配置cargo插件内部要安装的tomcat -->
+					<container>
+						<containerId>tomcat8x</containerId>
+						<!-- 内置的tomcat jar -->
+						<artifactInstaller>
+							<groupId>org.apache.tomcat</groupId>
+							<artifactId>tomcat</artifactId>
+							<version>8.5.20</version>
+						</artifactInstaller>
+					</container>
+					<configuration>
+						<!-- cargo 在web容器部署的方式。
+							1.standalone:代表,会在home的指定目录,将tomcat也就是web容器的一些配置生成,
+							并将web在该目录启动。
+							2.exsiting：代表,用户需要指定一个固定的web容器目录,让cargo在容器中对web项目进行操作。
+							https://www.cnblogs.com/forerver-elf/p/6253445.html 该链接有一定的解释。
+						-->
+						<type>standalone</type>
+						<!-- 由于是standalone部署方式,
+							因此,指定了下面的home中的目录,作为内置tomcat和web应用部署的目录
+						-->
+						<home>
+							${project.build.directory}/apache-tomcat-8.5.20
+						</home>
+						<properties>
+							<!-- 容器所要占用的端口及日志输出的密度 -->
+							<cargo.servlet.port>8088</cargo.servlet.port>
+							<cargo.tomcat.uriencoding>UTF-8</cargo.tomcat.uriencoding>
+							<!-- 之前是high,但是由于日志输出太多,导致Tomcat部署超时,因此改成了low -->
+							<cargo.logging>low</cargo.logging>
+						</properties>
+					</configuration>
+					<!-- 在使用cargo完成自动部署时的相关配置 -->
+					<deployables>
+						<deployable>
+							<!-- maven默认的工程groupId引用方式 -->
+							<!-- 要部署的项目的groupId -->
+							<groupId>${project.groupId}</groupId>
+							<!-- maven默认的工程artifactId引用方式 -->
+							<!-- 要部署的项目的artifactId -->
+							<artifactId>${project.artifactId}</artifactId>
+							<!-- 部署前打包的类型 -->
+							<type>war</type>
+							<properties>
+								<!-- 部署后web应用的名称 -->
+								<context>/javaee</context>
+							</properties>
+						</deployable>
+					</deployables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>
