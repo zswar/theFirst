@@ -1,0 +1,15 @@
+<!--pages/shop/newshop.wxml-->
+<!-- 卖家商铺界面 -->
+
+<view wx:for="{{info.details}}" wx:key="key" wx:for-index="index">
+  <view>
+    <image bindtap="setimg" data-index="{{index}}" data-type="img" src="{{imgs[index]}}"></image>
+  </view>
+  <input  placeholder="名字" bindinput="set"  data-index="{{index}}" data-type="name"></input>
+  <input  placeholder="价格" bindinput="set" data-index="{{index}}" data-type="price"></input>
+  <input  placeholder="库存" bindinput="set" data-index="{{index}}" data-type="stock"></input>
+</view>
+
+<button bindtap="add" >添加商品</button>
+<button bindtap="sub" >提交</button>
+<button bindtap="delete">下架商品</button>

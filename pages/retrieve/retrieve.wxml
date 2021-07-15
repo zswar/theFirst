@@ -1,0 +1,3 @@
+<!--pages/retrieve/retrieve.wxml-->
+<input placeholder="请输入要找回的账号名"  value="{{userName}}" bindinput="inputChange" ></input>
+<button bindtap="sub">确认提交</button>

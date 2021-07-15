@@ -1,0 +1,27 @@
+<!--pages/shop/shop.wxml-->
+<!--初版商城界面，可以删了-->
+<view>
+<image id="goods" src="/pages/img/hanako.PNG"></image>
+花藕子
+5¥
+购买数量：<input value="{{huacount}}" bindinput="huabuy" type="number"></input>
+<text>库存数量：{{huastock}}</text>
+<radio checked="{{huachecked}}" bindtap="huachange"></radio>
+</view>
+
+<view>
+<image id="goods" src="/pages/img/dragon.PNG"></image>
+傻龙
+50¥
+购买数量：<input value="{{shalongcount}}" bindinput="shalongbuy" type="number"></input>
+<text>库存数量：{{shalongstock}}</text>
+<radio checked="{{longchecked}}" bindtap="longchange"></radio>
+</view>
+
+
+
+
+
+
+<button bindtap="buy">付款</button>
+

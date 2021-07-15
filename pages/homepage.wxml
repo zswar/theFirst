@@ -1,0 +1,14 @@
+<!--pages/homepage.wxml-->
+<!--主界面，负责跳转4个页面-->
+<view id="title">
+  主界面
+  <image id="portrait" src="/pages/img/dragon.PNG"></image>
+  {{userName}}
+</view>
+<view>
+  <button type="primary" id="scan" bindtap="scan">扫描设备</button>
+  <button type="primary" id="map" bindtap="map">定位</button>
+  <button type="primary" id="set"  bindtap="set">设置</button>
+  <button type="primary" id="shop" bindtap="shop">商城</button>
+  <button type="primary" id="delMachine" bindtap="delMachine">删除设备</button>
+</view>

@@ -1,0 +1,4 @@
+<!--pages/shop/choose.wxml-->
+<!--一开始没注意到卖家买家的区分需求，不太好改，这里加个choose区分吧-->
+<button bindtap="customer">我是买家</button>
+<button bindtap="newshop">我是卖家</button>

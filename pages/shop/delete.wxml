@@ -1,0 +1,14 @@
+<!--pages/shop/customer.wxml-->
+<text>下架商品</text>
+<view wx:for="{{info.details}}" wx:key="key" wx:for-index="index" wx:for-item="item">
+  <view>
+    <image bindtap="setimg" data-index="{{index}}" data-type="img" src="{{item.img}}"></image>
+  </view>
+  <view>商品名{{item.name}}</view>
+  <view>价格{{item.price}}</view>
+  <view>库存量{{item.stock}} 
+  <radio checked="{{checked[index]}}" data-index="{{index}}" bindtap="change"  data-type="count"></radio>
+  </view>
+</view>
+
+<button bindtap="sub" >提交</button>

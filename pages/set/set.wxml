@@ -1,0 +1,15 @@
+<!--pages/set/set.wxml-->
+<!--未完全实现，可点击的是账号保护、修改密码、服务条款、销户、退出账号、设备（该页面功能未实现）-->
+
+<view id="title">设置</view>
+
+<view>账号</view>
+<view bindtap="protect">账号保护</view>
+<view bindtap="changepwd">修改密码</view>
+<view bindtap="ruler">服务条款</view>
+<text style="opacity: {{ruler}}">最终解释权归本人所有</text>
+<view bindtap="drop">销户</view>
+<view bindtap="logout">退出账号</view>
+
+<view bindtap="machine">设备</view>
+<view>我的</view>

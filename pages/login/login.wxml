@@ -1,0 +1,13 @@
+<!--pages/login/login.wxml-->
+<image id="portrait" src="/pages/img/hanako.PNG"></image>
+ 
+
+
+<input placeholder="请输入用户名" class="textbox" value="{{userName}}" bindinput="inputChange" data-type="userName"></input>
+<input placeholder="请输入密码" class="textbox" value="{{password}}" bindinput="inputChange" data-type="password" ></input>
+<text bindtap="retrieve">忘记密码</text>
+
+<button bindtap="userLogin" type="primary" >登录</button>
+<button bindtap="userRegister" type="default" >注册</button>
+
+

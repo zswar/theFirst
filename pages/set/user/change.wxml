@@ -1,0 +1,22 @@
+<!--pages/set/user/change.wxml-->
+<!--通过opacity控制页面变化-->
+<view style="opacity: {{opa}}">
+  <text>{{array[index]}}</text>
+
+  <label>密保答案：</label>
+  <input bindblur="ans"></input>
+  <button bindtap="ansSub">提交</button>
+</view>
+
+<view style="opacity: {{newopa}}">
+  <form bindsubmit="submit">
+    <label>请重新设置密码：</label>
+    <input name="password" placeholder="由任意字符组成，长度1-12位"></input>
+    <text class="error">{{pwderror}}</text>
+
+    <label>确认密码</label>
+    <input name="confirmpwd"></input>
+    <text class="error">{{conerror}}</text>
+    <button form-type="submit">提交</button>
+  </form>
+</view>

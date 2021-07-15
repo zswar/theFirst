@@ -1,0 +1,12 @@
+<!--pages/scan/delMachine.wxml-->
+<text>pages/scan/delMachine.wxml</text>
+
+<view style="opacity: {{firstopa}}">
+  <image  data-type="img" src="/pages/img/1号.jpg"></image>
+  <button bindtap="del1">删除1号设备</button>
+</view>
+
+<view style="opacity: {{secondopa}}">
+  <image  data-type="img" src="/pages/img/2号.jpg"></image>
+  <button bindtap="del2">删除2号设备</button>
+</view>

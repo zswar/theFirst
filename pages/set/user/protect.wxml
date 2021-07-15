@@ -1,0 +1,23 @@
+<!--pages/set/user/protect.wxml-->
+<!--通过opacity控制页面变化-->
+<view style="opacity: {{opa}}">
+  <text>{{array[index]}}</text>
+
+  <label>密保答案：</label>
+  <input bindblur="ans"></input>
+  <button bindtap="ansSub">提交</button>
+</view>
+
+<view style="opacity: {{newopa}}">
+  <label>重设密保问题（密保问题只能设置一个，后续可改进）</label>
+  <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}" name="question" >
+    <view class="picker">
+      当前选择：{{array[index]}}
+    </view>
+  </picker>
+	
+
+  <label>重设密保答案</label>
+  <input bindblur="answer"></input>
+  <button bindtap="answerSub">提交</button>
+</view>

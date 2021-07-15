@@ -1,0 +1,47 @@
+<!--pages/register/register.wxml-->
+<h1>免费注册</h1>
+
+
+<form bindsubmit="formSubmit" bindreset="formReset" >
+
+  <label>用户名：</label>
+  <!--做这里时还没了解微信的for循环，莽着做了，后面用的是循环-->
+  <input name="userName" placeholder="用户名由英文数字中文下划线&*@#等符号组成，长度1-12位"></input>
+	<text class="error">{{unerror}}</text>
+
+  <!--可以试下input type设为password，后期改进-->
+  <label>密码：</label>
+  <input name="password" placeholder="由任意字符组成，长度1-12位"></input>
+	<text class="error">{{pwderror}}</text>
+
+  <label>确认密码</label>
+  <input name="confirmpwd"></input>
+	<text class="error">{{conerror}}</text>
+
+  <label>单位：</label>
+  <input name="department" placeholder="可以由任意字符组成，长度1-40位"></input>
+	<text class="error">{{deperror}}</text>
+
+  <label>email：</label>
+  <input name="email" placeholder="邮箱由英文数字中文下划线&*@#等符号组成，长度6-24位"></input>
+	<text class="error">{{emerror}}</text>
+
+  <label>手机号：</label>
+  <input name="tel" placeholder="手机号为1开头的11位数字"></input>
+	<text class="error">{{telerror}}</text>
+
+  <label>安全设置（密保问题只能设置一个，后续可改进）：</label>
+  <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}" name="question">
+    <view class="picker">
+      当前选择：{{array[index]}}
+    </view>
+  </picker>
+	
+
+  <label>密保答案：</label>
+  <input name="answer"></input>
+	//设置form-type才能提交或重置
+	<button form-type="submit">提交</button>
+  <button form-type="reset">重置</button>
+
+</form>

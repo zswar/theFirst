@@ -1,0 +1,4 @@
+<!--pages/scan/newmachine.wxml-->
+<text>pages/scan/newmachine.wxml</text>
+<view><image  src='{{url[index]}}'></image></view>
+<button bindtap="sub">添加该设备</button>

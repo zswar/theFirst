@@ -1,0 +1,13 @@
+<!--pages/shop/customer.wxml-->
+<!--顾客浏览界面-->
+<text>pages/shop/customer.wxml</text>
+<view wx:for="{{info.details}}" wx:key="key" wx:for-index="index" wx:for-item="item">
+  <view>
+    <image bindtap="setimg" data-index="{{index}}" data-type="img" src="{{item.img}}"></image>
+  </view>
+  <view>商品名{{item.name}}</view>
+  <view>价格{{item.price}}</view>
+  <view>库存量{{item.stock}} <input value="{{counts[index]}}" data-index="{{index}}" bindinput="inputchange" type="number" data-type="count"></input> </view>
+</view>
+
+<button bindtap="sub" >提交</button>

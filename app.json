@@ -1,0 +1,35 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/homepage",
+    "pages/shop/choose",
+    "pages/shop/newshop",
+    "pages/test",
+    "pages/set/set",
+    "pages/scan/scan",
+    "pages/register/register",
+    "pages/map/map",
+    "pages/shop/shop",
+    "pages/retrieve/retrieve",
+    "pages/set/user/protect",
+    "pages/set/user/change",
+    "pages/set/user/machine",
+    "pages/shop/customer",
+    "pages/shop/delete",
+    "pages/scan/newmachine",
+    "pages/scan/delMachine"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
